@@ -46,17 +46,25 @@ export class UsersController {
   @UseGuards(authGuard)
   @Delete('logout')
   async logout(@Req() req: any, @Res() res: Response) {
-    const userEmail = req.user['email'];
-    await this.usersService.logout(userEmail);
-    res.clearCookie('authToken');
-    res.send('Logged out successfully');
+    try {
+      const userEmail = req.user['email'];
+      await this.usersService.logout(userEmail);
+      res.clearCookie('authToken');
+      res.send('Logged out successfully');
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
   }
 
   @UseGuards(authGuard)
   @Patch('changepass')
   updateUser(@Body() odlnew: updatepassDto, @Req() req: any) {
-    const oldPass = req.user['password'];
-    const userId = req.user['id'];
-    return this.usersService.updatePass(oldPass, odlnew, userId);
+    try {
+      const oldPass = req.user['password'];
+      const userId = req.user['id'];
+      return this.usersService.updatePass(oldPass, odlnew, userId);
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
   }
 }

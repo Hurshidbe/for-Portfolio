@@ -53,12 +53,8 @@ export class UsersService {
   }
 
   async logout(userEmail: string) {
-    try {
-      await this.userRepo.delete({ email: userEmail });
-      return 'logged out';
-    } catch (error) {
-      throw new HttpException(error.message, error.status);
-    }
+    await this.userRepo.delete({ email: userEmail });
+    return 'logged out';
   }
 
   async updatePass(oldPass: string, odlnew: updatepassDto, userId: number) {
